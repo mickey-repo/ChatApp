@@ -62,11 +62,6 @@ class RegisterActivity : AppCompatActivity() {
                 ).show()
             } else {
                 registerNow(username, password, email)
-                intent = Intent(this, MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-                finish()
             }
         }
     }
@@ -88,23 +83,22 @@ class RegisterActivity : AppCompatActivity() {
                     userMaps["email"] = email
 
                     //Open MainActivity when registration successful
-                    dbRef.setValue(userMaps)
-//                    dbRef.setValue(userMaps).addOnCompleteListener(this) { dbTask ->
-//                        if (dbTask.isSuccessful) {
-//                            intent = Intent(this, MainActivity::class.java)
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                            startActivity(intent)
-//                            finish()
-//                        } else {
-//                            Log.w(TAG, "serValueToFireBaseDB:failure", dbTask.exception)
-//                            Toast.makeText(
-//                                baseContext,
-//                                "serValueToFireBaseDB failed",
-//                                Toast.LENGTH_SHORT
-//                            ).show()
-//                        }
-//                    }
+                    dbRef.setValue(userMaps).addOnCompleteListener(this) { dbTask ->
+                        if (dbTask.isSuccessful) {
+                            intent = Intent(this, MainActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            Log.w(TAG, "serValueToFireBaseDB:failure", dbTask.exception)
+                            Toast.makeText(
+                                baseContext,
+                                "serValueToFireBaseDB failed",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
                 } else {
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(
